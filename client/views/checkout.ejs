@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/productSectionStyle.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+</head>
+<body style="background-color: #f0eeec" ng-app="checkout" ng-controller="checkout">
+<div class="container">
+
+    <img src="https://cdn4.iconfinder.com/data/icons/flat-brand-logo-2/512/ebay-128.png"><span style="font-size: 300%">Checkout</span>
+
+    <div class="row">
+        <h4>Pay With</h4>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <!--<a data-toggle="collapse" href="#collapse1" id="xyz">-->Credit or Debit card<!--</a>-->
+                            </h4>
+                        </div>
+                        <!--<div id="collapse1" class="panel-collapse collapse">-->
+                        <div>
+                            <form class="form-horizontal" name="checkFrom" id="myForm" ng-submit="checkoutFinal()">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="email">Name on the Card</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="email" placeholder="Name on Card" name="cname" ng-model="cname" required>
+                                    </div>
+                                    <div class="form-group" ng-show="checkFrom.cname.$touched && checkFrom.cname.$invalid">
+                                        <span style="color: red">Enter Credit Card Holder Name</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="pwd">Card Number</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" min="1000000000000000" max="9999999999999999" class="form-control" id="pwd" placeholder="Enter Card Number" name="cnum" ng-model="cnum" ng-pattern="/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/" required>
+                                    </div>
+                                    <div class="form-group" ng-show="checkFrom.cnum.$touched && checkFrom.cnum.$invalid && checkFrom.cnum.$error.pattern">
+                                        <span style="color: red">Invalid Credit Card number</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="pwd" style="clear: both;">Expiry Date</label>
+                                    <div class="col-xs-2">Month
+                                        <select class="form-control" style="float: left" required>
+                                            <option>Jan</option>
+                                            <option>Feb</option>
+                                            <option>March</option>
+                                            <option>April</option>
+                                            <option>May</option>
+                                            <option>June</option>
+                                            <option>July</option>
+                                            <option>August</option>
+                                            <option>September</option>
+                                            <option>October</option>
+                                            <option>November</option>
+                                            <option>December</option>
+                                        </select>
+                                        Year
+                                        <select class="form-control" style="float: left" required>
+                                            <option>2017</option>
+                                            <option>2018</option>
+                                            <option>2019</option>
+                                            <option>2020</option>
+                                            <option>2021</option>
+                                            <option>2022</option>
+                                            <option>2023</option>
+                                            <option>2024</option>
+                                            <option>2025</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="pwd">CVV</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" min="100" max="999" class="form-control" id="pwd" placeholder="Enter CVV" name="ccv" ng-model="ccv" required>
+                                        <div class="form-group" ng-show="checkFrom.ccv.$touched && checkFrom.ccv.$invalid">
+                                            <span style="color: red">Invalid Credit Card CVV</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 20px">
+
+            </div>
+            <div class="row" style="height: 20px;">
+                <h4>Ship To</h4>
+            </div>
+            <div class="row" style="height: 20px">
+
+            </div>
+            <div class="row" style="height: 200px;background-color: white;">
+                <div class="row" style="height: 20px">
+
+                </div>
+                <div class="row">
+                    <div class="col-md-1" style="width: 5px">
+
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            {{ address }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1" style="width: 10px;">
+
+        </div>
+        <div class="col-md-4" style="background-color: white">
+            <div class="panel panel-header" >
+                <h2><span>Order total: ${{grandTotal}} </span>
+
+                </h2>
+            </div>
+            <div class="form-group" ng-show="!checkFrom.cname.$invalid && !checkFrom.cnum.$invalid && !checkFrom.ccv.$invalid">
+                <input type="submit" class="btn btn-primary" value="CheckOut">
+            </div>
+            </from>
+            <div class="row" style="height: 10px">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="javascripts/checkout.js" type="text/javascript"></script>
+</body>
+</html>

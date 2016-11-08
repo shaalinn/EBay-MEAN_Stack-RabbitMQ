@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <link rel="stylesheet" href="../stylesheets/dropdowncss.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/productSectionStyle.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../stylesheets/productpage.css">
+</head>
+<body ng-app="product" ng-controller="product" style="background-color: #f7f7f7">
+<div class="container">
+    <div class="page-header">
+        <table>
+            <tbody>
+            <tr>
+                <td width="100%">
+                    Hi!<div class="dropdown"><a class="dropbtn" href="productPage.html" >{{username}} <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                        <div class="dropdown-content">
+                            <a href="/profile">Profile</a>
+                            <a href="/signout">Sign Out!</a>
+                        </div>
+                    </div> | <a href="/postAdvertisement">Sell</a>
+                </td>
+                <td >
+                    <a href="/shoppingCart" ><i class="fa fa-shopping-cart" style="font-size: 18px;color:grey;"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <a href="/">
+                        <img src="https://cdn4.iconfinder.com/data/icons/flat-brand-logo-2/512/ebay-128.png">
+                    </a>
+                </td>
+                <td width="100%">
+                    <input class="form-control" type="text"  placeholder="Search..." ng-model="searchQ">
+                </td>
+                <td>
+                    <button class="btn btn-primary" ng-click="search()">Search</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img style="overflow: hidden" src="https://onepagelove.com/wp-content/uploads/2014/12/ph-400x211.jpg" width="350" height="350" alt="" />
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="product-title"><b><%=result[0].p_name%></b></div>
+                <div class="product-desc"><%=result[0].p_desc%></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6" style="background-color: #e2e2e2; height: 300px">
+                    <hr>
+                    <% if(result[0].ausel == "sell"){%>
+                    <form ng-submit="addToSell()">
+                    <div class="product-price" >$<%=result[0].price%></div>
+                    <div>
+                    Quantity: <br>
+                        <input type="number" placeholder="Enter Quantity" class="form-control" ng-model="quantity" ng-init=1 min="1" max="<%=result[0].quantity%>" style="width: 150px" required>/<%=result[0].quantity%>
+                    </div>
+                    <br>
+                    <input type="hidden"  ng-init="p_id='<%=result[0]._id%>'" ng-model="p_id">
+                    <input type="hidden"  ng-init="price='<%=result[0].price%>'" ng-model="price">
+                    <div class="btn-group cart">
+                        <input type="submit" value="Add to cart" class="btn btn-primary">
+                    </div>
+                    </form>
+                    <%}%>
+
+                    <% if(result[0].ausel == "auction"){%>
+                    <form ng-submit="addToBid()">
+                    <div>
+                        Time Left To Bid: <%=remain%>
+                    </div>
+                    <div>
+                        Bidding Price: <br>
+                        <input type="number" placeholder="Enter Bid" class="form-control" ng-model="bidPrice" ng-init="bidPrice=<%=result[0].price%>" min="<%=result[0].price%>" style="width: 150px" required>
+                    </div>
+                    <input type="hidden"  ng-init="p_id='<%=result[0]._id%>'" ng-model="p_id">
+                    <br>
+                    <div class="btn-group cart">
+                        <input type="submit" value="Place Bid" class="btn btn-primary">
+                    </div>
+                    </form>
+                    <%}%>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5" style="width: 200px;height: 200px;background-color: #ffffff">
+                    Seller :<a href="/profile/<%=result[0].u_id.username%>"> <%=result[0].u_id.fn%> <%=result[0].u_id.ln%></a> <br>
+                    Shipped from : <%=result[0].source%> <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 product-info">
+            <ul id="myTab" class="nav nav-tabs nav_tabs">
+
+                <li class="active"><a href="#service-one" data-toggle="tab">DESCRIPTION</a></li>
+                <li><a href="#service-two" data-toggle="tab">PRODUCT INFO</a></li>
+
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="service-one">
+
+                    <section class="container product-info">
+                        <%=result[0].p_desc%>
+
+                    </section>
+
+                </div>
+                <div class="tab-pane fade" id="service-two">
+
+                    <section class="container">
+                        <li>Available Quantity: <%=result[0].quantity%></li>
+                        <li>Seller: <%=result[0].u_id.fn%> <%=result[0].u_id.ln%></li>
+                        <li>Shipped from : <%=result[0].source%></li>
+                    </section>
+
+                </div>
+                <div class="tab-pane fade" id="service-three">
+
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="page-header">
+        <h2>Searched</h2>
+    </div>
+</div>
+<div class="container">
+    <div id="products" class="row list-group">
+
+        <div class="item  col-xs-4 col-lg-4" ng-repeat="x in products">
+            <div class="thumbnail">
+                <img class="group list-group-image" src="https://onepagelove.com/wp-content/uploads/2014/12/ph-400x211.jpg" alt="" />
+                <div class="caption">
+                    <a href="/product/{{x.p_id}}">
+                        <h4 class="group inner list-group-item-heading">
+                            {{ x.p_name }}</h4>
+                    </a>
+                    <p class="group inner list-group-item-text">
+                        For {{ x.ausel }}</p>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p class="lead">
+                                ${{ x.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../javascripts/product.js" type="text/javascript"></script>
+</body>
+</html>
