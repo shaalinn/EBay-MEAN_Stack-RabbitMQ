@@ -88,6 +88,7 @@ exports.allSolds_request = function(msg, callback) {
         }
     });
 };
+
 exports.updateProfile_request = function(msg, callback) {
     var res={};
     console.log("updateProfile request");
